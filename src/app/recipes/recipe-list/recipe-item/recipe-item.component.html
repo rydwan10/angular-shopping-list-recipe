@@ -1,0 +1,16 @@
+<a href="#" class="list-group-item" (click)="onSelected()">
+  <div class="row">
+    <div class="col-7">
+      <h4 class="list-group-item-heading">{{ recipe.name }}</h4>
+      <p class="list-group-item-text">{{ recipe.description }}</p>
+    </div>
+    <div class="col">
+      <img
+        [src]="recipe.imagePath"
+        alt="{{ recipe.name }}"
+        class="img-responsive"
+        style="max-height: 50px"
+      />
+    </div>
+  </div>
+</a>
