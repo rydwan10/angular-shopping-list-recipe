@@ -1,4 +1,9 @@
-<a href="#" class="list-group-item" (click)="onSelected()">
+<a
+  [routerLink]="[index]"
+  routerLinkActive="active"
+  style="text-decoration: none; cursor: pointer"
+  class="list-group-item"
+>
   <div class="row">
     <div class="col-7">
       <h4 class="list-group-item-heading">{{ recipe.name }}</h4>
@@ -8,8 +13,8 @@
       <img
         [src]="recipe.imagePath"
         alt="{{ recipe.name }}"
-        class="img-responsive"
-        style="max-height: 50px"
+        class="img-responsive rounded-circle"
+        style="max-height: 120px"
       />
     </div>
   </div>
