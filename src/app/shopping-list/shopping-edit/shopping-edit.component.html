@@ -1,19 +1,36 @@
 <div class="row">
   <div class="col">
-    <form (submit)="$event.preventDefault(); onAddItem()">
+    <form (ngSubmit)="onAddItem(f)" #f="ngForm">
       <div class="row">
         <div class="col-sm-5 from-group">
           <label for="name">Name</label>
-          <input type="text" id="name" class="form-control" #nameInput />
+          <input
+            type="text"
+            id="name"
+            class="form-control"
+            name="name"
+            ngModel
+            required
+          />
         </div>
         <div class="col-sm-2" class="form-group">
           <label for="amount">Amount</label>
-          <input type="number" id="amount" class="form-control" #amountInput />
+          <input
+            type="number"
+            id="amount"
+            class="form-control"
+            name="amount"
+            ngModel
+            required
+            pattern="^[1-9]+[0-9]*$"
+          />
         </div>
       </div>
       <div class="row">
         <div class="col">
-          <button class="btn btn-success" type="submit">Add</button>
+          <button class="btn btn-success" type="submit" [disabled]="!f.valid">
+            Add
+          </button>
           <button class="btn btn-danger ml-2" type="button">Delete</button>
           <button class="btn btn-primary ml-2" type="button">Clear</button>
         </div>
