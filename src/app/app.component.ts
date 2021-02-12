@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from './auth/auth.service';
 import { Ingredient } from './shared/ingredient.model';
 
 @Component({
@@ -6,6 +7,10 @@ import { Ingredient } from './shared/ingredient.model';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
-  constructor() {}
+export class AppComponent implements OnInit {
+  constructor(private authService: AuthService) {}
+
+  ngOnInit(): void {
+    this.authService.autoLogin();
+  }
 }
