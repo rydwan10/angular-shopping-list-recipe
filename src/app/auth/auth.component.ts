@@ -17,7 +17,7 @@ import { PlaceholderDirective } from '../shared/placeholder/placeholder.directiv
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css'],
 })
-export class AuthComponent implements OnInit, OnDestroy {
+export class AuthComponent implements OnDestroy {
   isLoginMode = true;
   isLoading = false;
   error: string = null;
@@ -31,14 +31,13 @@ export class AuthComponent implements OnInit, OnDestroy {
     private componentFactoryResolver: ComponentFactoryResolver
   ) {}
 
-  ngOnInit(): void {}
-
-  ngOnDestroy(): void {
-    this.closeSub.unsubscribe();
-  }
-
   onSwitchMode() {
     this.isLoginMode = !this.isLoginMode;
+  }
+  ngOnDestroy() {
+    if (this.closeSub) {
+      this.closeSub.unsubscribe();
+    }
   }
 
   onHandleError() {
