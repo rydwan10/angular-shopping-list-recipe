@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core.module';
 import { HeaderComponent } from './header/header.component';
+import { LoggingService } from './logging.service';
 import { SharedModule } from './shared/shared.module';
 
 @NgModule({
@@ -16,7 +17,7 @@ import { SharedModule } from './shared/shared.module';
     SharedModule,
     CoreModule,
   ],
-  providers: [],
+  // providers: [LoggingService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
