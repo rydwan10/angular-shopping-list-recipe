@@ -6,14 +6,12 @@ import {
   ViewChild,
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
-import { AuthResponseData, AuthService } from './auth.service';
+import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
 import { AlertComponent } from '../shared/alert/alert.component';
 import { PlaceholderDirective } from '../shared/placeholder/placeholder.directive';
-import { Store } from '@ngrx/store';
 import * as fromApp from '../store/app.reducer';
-import * as AuthActons from './store/auth.actions';
+import * as AuthActions from './store/auth.actions';
 
 @Component({
   selector: 'app-auth',
@@ -24,13 +22,14 @@ export class AuthComponent implements OnDestroy, OnInit {
   isLoginMode = true;
   isLoading = false;
   error: string = null;
+
   @ViewChild(PlaceholderDirective, { static: false })
   alertHost: PlaceholderDirective;
+
   private closeSub: Subscription;
+  private storeSub: Subscription;
 
   constructor(
-    private authService: AuthService,
-    private router: Router,
     private componentFactoryResolver: ComponentFactoryResolver,
     private store: Store<fromApp.AppState>
   ) {}
@@ -42,6 +41,10 @@ export class AuthComponent implements OnDestroy, OnInit {
   ngOnDestroy() {
     if (this.closeSub) {
       this.closeSub.unsubscribe();
+    }
+
+    if (this.storeSub) {
+      this.storeSub.unsubscribe();
     }
   }
 
@@ -56,7 +59,7 @@ export class AuthComponent implements OnDestroy, OnInit {
   }
 
   onHandleError() {
-    this.error = null;
+    this.store.dispatch(new AuthActions.ClearError());
   }
 
   onSubmit(form: NgForm) {
@@ -65,31 +68,12 @@ export class AuthComponent implements OnDestroy, OnInit {
     const email = form.value.email;
     const password = form.value.password;
 
-    let authObservable: Observable<AuthResponseData>;
-
-    this.isLoading = true;
-
     if (this.isLoginMode) {
-      // authObservable = this.authService.login(email, password);
-      this.store.dispatch(
-        new AuthActons.LoginStart({ email: email, password: password })
-      );
+      this.store.dispatch(new AuthActions.LoginStart({ email, password }));
     } else {
-      authObservable = this.authService.signUp(email, password);
+      this.store.dispatch(new AuthActions.SignupStart({ email, password }));
     }
 
-    // authObservable.subscribe(
-    //   (response) => {
-    //     console.log(response);
-    //     this.router.navigate(['/recipes']);
-    //     this.isLoading = false;
-    //   },
-    //   (errorMessage) => {
-    //     this.isLoading = false;
-    //     this.showErrorAlert(errorMessage);
-    //     this.error = errorMessage;
-    //   }
-    // );
     form.reset();
   }
 
