@@ -25,7 +25,8 @@ const handleAuthentication = (
   userId: string,
   token: string
 ) => {
-  const expirationDate = new Date(new Date().getTime() + +expiresIn);
+  // fix this bug later
+  const expirationDate = new Date(new Date().getTime() + +expiresIn * 1000);
   const user = new User(email, userId, token, expirationDate);
   localStorage.setItem('userData', JSON.stringify(user));
 
@@ -133,6 +134,7 @@ export class AuthEffects {
       this.router.navigate(['/']);
     })
   );
+
   @Effect()
   autoLogin = this.actions$.pipe(
     ofType(AuthActions.AUTO_LOGIN),
@@ -157,9 +159,13 @@ export class AuthEffects {
       );
 
       if (loadedUser.token) {
+        /// something wrong in here....
+        // console.log(new Date(userData._tokenExpirationDate).getTime());
+        // console.log(new Date().getTime());
         const expirationDuration =
           new Date(userData._tokenExpirationDate).getTime() -
           new Date().getTime();
+
         this.authService.setLogoutTimer(expirationDuration);
 
         return new AuthActions.AuthenticateSuccess({
